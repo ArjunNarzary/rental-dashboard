@@ -30,8 +30,8 @@ export type Listing = $Result.DefaultSelection<Prisma.$ListingPayload>
 export namespace $Enums {
   export const ListingStatus: {
   pending: 'pending',
-  approve: 'approve',
-  reject: 'reject'
+  approved: 'approved',
+  rejected: 'rejected'
 };
 
 export type ListingStatus = (typeof ListingStatus)[keyof typeof ListingStatus]

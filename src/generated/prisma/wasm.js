@@ -144,8 +144,8 @@ exports.Prisma.NullsOrder = {
 };
 exports.ListingStatus = exports.$Enums.ListingStatus = {
   pending: 'pending',
-  approve: 'approve',
-  reject: 'reject'
+  approved: 'approved',
+  rejected: 'rejected'
 };
 
 exports.Prisma.ModelName = {

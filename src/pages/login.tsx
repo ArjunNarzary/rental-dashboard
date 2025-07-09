@@ -23,12 +23,12 @@ export default function LoginPage() {
         </div>
         <p className="mt-6 text-center text-sm font-medium text-neutral-500">
           Don&apos;t have an account?&nbsp;
-          <a
+          <Link
             className="font-semibold text-neutral-700 transition-colors hover:text-neutral-900"
             href="/register"
           >
             Sign up
-          </a>
+          </Link>
         </p>
       </div>
     </div>

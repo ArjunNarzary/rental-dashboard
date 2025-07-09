@@ -20,8 +20,8 @@ model User {
 
 enum ListingStatus {
   pending
-  approve
-  reject
+  approved
+  rejected
 }
 
 model Listing {
