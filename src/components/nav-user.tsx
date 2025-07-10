@@ -44,7 +44,9 @@ export function NavUser({
                   src={user.avatar}
                   alt={session?.data?.user.name || ""}
                 />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {getFirstTwoCharacters(session?.data?.user?.name || "name")}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">

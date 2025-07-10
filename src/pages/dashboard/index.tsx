@@ -21,7 +21,6 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const session = await getServerSession(context.req, context.res, authOptions)
-  console.log("session on client", session)
 
   if (!session) {
     return {
@@ -31,7 +30,12 @@ export const getServerSideProps = async (
       },
     }
   }
-  const res = await axios.get("http://localhost:3000/api/listings")
+
+  const res = await axios.get("http://localhost:3000/api/listings", {
+    headers: {
+      Cookie: context.req.headers.cookie || "",
+    },
+  })
   const listingRes: TListingResponse = res.data
   return { props: { listingRes } }
 }
