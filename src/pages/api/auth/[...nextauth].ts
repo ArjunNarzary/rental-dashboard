@@ -1,9 +1,9 @@
 import { validatePassword } from "@/lib/password"
 import prisma from "@/lib/prisma"
-import NextAuth from "next-auth"
+import NextAuth, { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
-const authOptions = NextAuth({
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -38,6 +38,9 @@ const authOptions = NextAuth({
       },
     }),
   ],
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -56,6 +59,6 @@ const authOptions = NextAuth({
       return session
     },
   },
-})
+}
 
-export default authOptions
+export default NextAuth(authOptions)

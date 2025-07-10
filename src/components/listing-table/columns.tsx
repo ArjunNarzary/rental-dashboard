@@ -58,7 +58,7 @@ export const columns = (
             onClick={() => handleActionClick("approve", listing)}
             variant="outline"
             size="sm"
-            className="text-green-600"
+            className="text-green-600 cursor-pointer"
             disabled={!!isLoading || listing.status === "approved"}
           >
             Approve
@@ -67,7 +67,7 @@ export const columns = (
             onClick={() => handleActionClick("reject", listing)}
             variant="outline"
             size="sm"
-            className="text-red-600"
+            className="text-red-600 cursor-pointer"
             disabled={!!isLoading || listing.status === "rejected"}
           >
             Reject
@@ -76,7 +76,7 @@ export const columns = (
             onClick={() => handleActionClick("edit", listing)}
             variant="outline"
             size="sm"
-            className="text-blue-600"
+            className="text-blue-600 cursor-pointer"
             disabled={!!isLoading}
           >
             Edit

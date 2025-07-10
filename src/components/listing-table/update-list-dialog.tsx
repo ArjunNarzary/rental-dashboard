@@ -51,7 +51,6 @@ export default function UpdateListDialog({
   setEditDialogOpen,
   setAllListings,
 }: TUpdateListDialogProps) {
-  console.log(listing)
   const form = useForm<z.infer<typeof updateListSchema>>({
     resolver: zodResolver(updateListSchema),
     defaultValues: {
@@ -107,9 +106,6 @@ export default function UpdateListDialog({
         setEditDialogOpen(false)
       }}
     >
-      {/* <DialogTrigger asChild>
-          <Button variant="outline">Share</Button>
-        </DialogTrigger> */}
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Update List</DialogTitle>
@@ -198,9 +194,12 @@ export default function UpdateListDialog({
             </div>
             <div className="flex flex-col gap-4 pt-6">
               <Button
+                className="cursor-pointer"
                 type="submit"
                 variant="default"
-                disabled={form.formState.isSubmitting}
+                disabled={
+                  form.formState.isSubmitting || !form.formState.isDirty
+                }
               >
                 Update
               </Button>

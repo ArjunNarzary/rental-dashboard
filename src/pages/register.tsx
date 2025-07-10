@@ -25,9 +25,9 @@ export default function LoginPage() {
           Don&apos;t have an account?&nbsp;
           <Link
             className="font-semibold text-neutral-700 transition-colors hover:text-neutral-900"
-            href="/register"
+            href="/login"
           >
-            Sign up
+            Sign in
           </Link>
         </p>
       </div>

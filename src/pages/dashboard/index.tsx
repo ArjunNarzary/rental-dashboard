@@ -11,6 +11,7 @@ import { updateStatusSchema } from "@/schemas/listing"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import UpdateListDialog from "@/components/listing-table/update-list-dialog"
+import AuthLayout from "@/components/AuthLayout"
 
 const updateListingStatusApi = (data: z.infer<typeof updateStatusSchema>) => {
   return axios.post("/api/listings/update-status", data)
@@ -20,6 +21,7 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const session = await getServerSession(context.req, context.res, authOptions)
+  console.log("session on client", session)
 
   if (!session) {
     return {
@@ -75,19 +77,21 @@ export default function DashboardPage({
   }
 
   return (
-    <div className="container p-6">
-      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-      <DataTable
-        columns={columns(handleAction, mutation.isPending)}
-        data={allListings}
-      />
-      <UpdateListDialog
-        open={editDialogOpen}
-        listing={selectedItem}
-        setSelectedItem={setSelectedItem}
-        setEditDialogOpen={setEditDialogOpen}
-        setAllListings={setAllListings}
-      />
-    </div>
+    <AuthLayout>
+      <div className="container p-6">
+        <h1 className="text-2xl font-bold mb-4">Rental Listing</h1>
+        <DataTable
+          columns={columns(handleAction, mutation.isPending)}
+          data={allListings}
+        />
+        <UpdateListDialog
+          open={editDialogOpen}
+          listing={selectedItem}
+          setSelectedItem={setSelectedItem}
+          setEditDialogOpen={setEditDialogOpen}
+          setAllListings={setAllListings}
+        />
+      </div>
+    </AuthLayout>
   )
 }
