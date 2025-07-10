@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useEffect } from "react"
 import { updateListSchema } from "@/schemas/listing"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -28,12 +28,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select"
+import axios, { AxiosError, AxiosResponse } from "axios"
+import { useMutation } from "@tanstack/react-query"
+import { toast } from "sonner"
 
 type TUpdateListDialogProps = {
   open: boolean
   listing: TListings | null
   setSelectedItem: Dispatch<SetStateAction<TListings | null>>
   setEditDialogOpen: Dispatch<SetStateAction<boolean>>
+  setAllListings: Dispatch<SetStateAction<TListings[]>>
+}
+
+const updateListApi = (data: z.infer<typeof updateListSchema>) => {
+  return axios.post(`/api/listings/update/${data.id}`, data, { method: "PUT" })
 }
 
 export default function UpdateListDialog({
@@ -41,20 +49,54 @@ export default function UpdateListDialog({
   listing,
   setSelectedItem,
   setEditDialogOpen,
+  setAllListings,
 }: TUpdateListDialogProps) {
   console.log(listing)
   const form = useForm<z.infer<typeof updateListSchema>>({
     resolver: zodResolver(updateListSchema),
     defaultValues: {
-      id: listing?.id ?? "",
-      name: listing?.name ?? "",
-      price: listing?.price ?? 0,
-      status: listing?.status ?? "pending",
+      id: "",
+      name: "",
+      price: 0,
+      status: "pending",
     },
   })
 
+  const mutation = useMutation({
+    mutationFn: updateListApi,
+    onError: (err: AxiosError<{ error: boolean; message: string }>) => {
+      toast.error(
+        err?.response?.data?.message || "Something went wrong. Please try again"
+      )
+    },
+    onSuccess: (res: AxiosResponse) => {
+      toast.success("List has been updated successfully.")
+      const updatedData = res.data.updatedList
+      setAllListings((prev) =>
+        prev.map((item) => {
+          if (item.id === updatedData.id) {
+            return updatedData
+          }
+          return item
+        })
+      )
+      setEditDialogOpen(false)
+    },
+  })
+
+  useEffect(() => {
+    if (listing) {
+      form.reset({
+        id: listing?.id,
+        name: listing?.name,
+        price: listing?.price,
+        status: listing?.status,
+      })
+    }
+  }, [listing, form])
+
   const onSubmit = async (values: z.infer<typeof updateListSchema>) => {
-    console.log(values)
+    mutation.mutate(values)
   }
 
   return (
@@ -121,6 +163,7 @@ export default function UpdateListDialog({
                         placeholder="Enter price"
                         type="number"
                         {...field}
+                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -154,7 +197,11 @@ export default function UpdateListDialog({
               />
             </div>
             <div className="flex flex-col gap-4 pt-6">
-              <Button type="submit" variant="default">
+              <Button
+                type="submit"
+                variant="default"
+                disabled={form.formState.isSubmitting}
+              >
                 Update
               </Button>
               <DialogClose asChild>

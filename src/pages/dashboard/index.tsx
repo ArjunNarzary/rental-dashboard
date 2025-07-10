@@ -7,16 +7,13 @@ import { DataTable } from "@/components/listing-table/data-table"
 import { columns } from "@/components/listing-table/columns"
 import { useState } from "react"
 import z from "zod"
-import { updateListSchema, updateStatusSchema } from "@/schemas/listing"
+import { updateStatusSchema } from "@/schemas/listing"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import UpdateListDialog from "@/components/listing-table/update-list-dialog"
 
 const updateListingStatusApi = (data: z.infer<typeof updateStatusSchema>) => {
   return axios.post("/api/listings/update-status", data)
-}
-const updateListingApi = (data: z.infer<typeof updateListSchema>) => {
-  return axios.post(`/api/listings/edit/${data.id}`, data)
 }
 
 export const getServerSideProps = async (
@@ -89,6 +86,7 @@ export default function DashboardPage({
         listing={selectedItem}
         setSelectedItem={setSelectedItem}
         setEditDialogOpen={setEditDialogOpen}
+        setAllListings={setAllListings}
       />
     </div>
   )
