@@ -133,6 +133,15 @@ exports.Prisma.ListingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AuditScalarFieldEnum = {
+  id: 'id',
+  adminId: 'adminId',
+  listId: 'listId',
+  action: 'action',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -150,7 +159,8 @@ exports.ListingStatus = exports.$Enums.ListingStatus = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Listing: 'Listing'
+  Listing: 'Listing',
+  Audit: 'Audit'
 };
 
 /**

@@ -48,11 +48,19 @@ export default async function handler(
     })
   }
 
-  console.log("data", data)
   // Update list
   const updatedList = await prisma.listing.update({
     where: { id },
     data: { ...data },
+  })
+
+  // Add at audit table
+  await prisma.audit.create({
+    data: {
+      adminId: session?.user?.id,
+      listId: updatedList.id,
+      action: "edited",
+    },
   })
 
   return res.status(200).json({

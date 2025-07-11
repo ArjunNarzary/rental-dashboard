@@ -16,6 +16,7 @@ model User {
   name     String?
   email    String  @unique
   password String
+  Audit    Audit[]
 }
 
 enum ListingStatus {
@@ -29,6 +30,18 @@ model Listing {
   name      String
   price     Int
   status    ListingStatus @default(pending)
+  Audit     Audit[]
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
+}
+
+model Audit {
+  id        String   @id @default(uuid())
+  adminId   String?
+  user      User?    @relation(fields: [adminId], references: [id])
+  listId    String?
+  list      Listing? @relation(fields: [listId], references: [id])
+  action    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

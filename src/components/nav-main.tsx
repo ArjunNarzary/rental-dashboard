@@ -1,5 +1,3 @@
-import { type Icon } from "@tabler/icons-react"
-
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -8,6 +6,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useRouter } from "next/router"
+import { LucideProps } from "lucide-react"
 
 export function NavMain({
   items,
@@ -15,7 +14,9 @@ export function NavMain({
   items: {
     title: string
     url: string
-    icon?: Icon
+    icon?: React.ForwardRefExoticComponent<
+      Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
+    >
   }[]
 }) {
   const router = useRouter()
@@ -26,6 +27,7 @@ export function NavMain({
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
+                onClick={() => router.push(item.url)}
                 tooltip={item.title}
                 className={
                   router.pathname == item.url

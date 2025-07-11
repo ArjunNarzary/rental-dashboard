@@ -62,6 +62,15 @@ export default async function handler(
       },
     })
 
+    // Added at audit table
+    await prisma.audit.create({
+      data: {
+        adminId: session.user.id,
+        listId: updatedListing.id,
+        action: statusMapping[data.status],
+      },
+    })
+
     return res.status(200).json({
       updatedListing,
     })
