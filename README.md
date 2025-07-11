@@ -45,7 +45,7 @@ cd rental-dashboard
 
 ### 2. Rename .env.example as .env
 
-### 3. Install dependcies
+### 3. Install dependencies
 
 ```bash
 npm install
